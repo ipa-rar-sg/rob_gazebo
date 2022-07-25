@@ -14,4 +14,19 @@
 ```bash
     roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
 ```
+#### SLAM with Turtlebot3
+##### Requirements
+- Turtlebot3 and gmapping
+```bash
+sudo apt install ros-noetic-turtlebot3 && ros-noetic-slam-gmapping
+```
+##### Running steps
+- Launch the slam module and then operate from the teleop terminal commands
+```bash
+roslaunch turtlebot3_slam turtlebot3_slam.launch slam_methods:=gmapping
+```
+- To save the map:
+```bash
+rosrun map_server map_saver -f "file_name_and_path_here"
+```
 
