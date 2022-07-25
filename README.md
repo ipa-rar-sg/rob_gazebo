@@ -18,7 +18,7 @@
 ##### Requirements
 - Turtlebot3 and gmapping
 ```bash
-sudo apt install ros-noetic-turtlebot3 && ros-noetic-slam-gmapping
+sudo apt install ros-noetic-turtlebot3 ros-noetic-slam-gmapping
 ```
 ##### Running steps
 - Launch the slam module and then operate from the teleop terminal commands
