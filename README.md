@@ -46,3 +46,8 @@
     rosrun map_server map_saver -f "file_name_and_path_here"
 ```
 
+### Useful important links
+- [Gazebo plugins in ROS](https://classic.gazebosim.org/tutorials?tut=ros_gzplugins&cat=connect_ros#Tutorial:UsingGazebopluginswithROS)
+- [URDF tutorials](https://wiki.ros.org/urdf/Tutorials)
+- [Gazebo Ros Demos - Github Repo](https://github.com/ros-simulation/gazebo_ros_demos)
+
