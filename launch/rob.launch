@@ -2,10 +2,8 @@
   <!-- World related -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find rob_gazebo)/worlds/vfeld.world"/>
-    <!-- more default parameters can be changed here -->
   </include>
 
-  <!-- Robot related -->
   <!-- Turtlebot -->
   <group ns="turtle_rob">
     <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
@@ -21,12 +19,12 @@
   <!-- Neobotix MPO_700 -->
   <group ns="neo_rob">
     <arg name="model_neo" default="mpo_700"/>
-    <arg name="x2_pos" default="16.0"/>
-    <arg name="y2_pos" default="1.5"/>
-    <arg name="z2_pos" default="0.0"/>
+    <arg name="x_pos" default="16.0"/>
+    <arg name="y_pos" default="1.5"/>
+    <arg name="z_pos" default="0.0"/>
     <param name="robot_description" command="$(find xacro)/xacro $(find neo_simulation)/robots/$(arg model_neo)/$(arg model_neo).urdf.xacro" />
 
-    <node pkg="gazebo_ros" type="spawn_model" name="spawn_neo"  args="-urdf -model neo_$(arg model_neo) -x $(arg x2_pos) -y $(arg y2_pos) -z $(arg z2_pos) -param robot_description" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_neo"  args="-urdf -model neo_$(arg model_neo) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
     <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_keyboard"  output="screen">
     </node>
   </group>
