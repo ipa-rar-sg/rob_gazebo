@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<robot name="ipalidar" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:property name="PI" value="3.14159265359"/>
+  <xacro:property name="height" value="0.25"/>
+  <xacro:property name="radius" value="0.071"/>
+  <xacro:property name="mass" value="0.4"/>
+  <link name="world"/>
+  <joint name="fixed" type="fixed">
+    <parent link="world"/>
+    <child link="link1"/>
+  </joint>
+  <!-- Base Link -->
+  <link name="link1">
+    <collision>
+      <origin xyz="0 0 ${height/2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${radius}" length="${height}"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 ${height/2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${radius}" length="${height}"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <origin xyz="0 0 ${height/2}" rpy="0 0 0"/>
+      <mass value="${mass}"/>
+      <inertia
+        ixx="${mass * radius * radius / 2}" ixy="0.0" ixz="0.0"
+        iyy="${mass * radius * radius / 2}" iyz="0.0"
+        izz="${mass * radius * radius / 2}"/>
+    </inertial>
+  </link>
+  <!-- Lidar itself -->
+  <joint name="hokuyo_joint" type="fixed">
+    <origin xyz="0 0 ${height + 0.05}" rpy="0 0 0"/>
+    <parent link="link1"/>
+    <child link="hokuyo_link"/>
+  </joint>
+  <link name="hokuyo_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://rob_gazebo/meshes/hokuyo.dae"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="1e-5"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+    </inertial>
+  </link>
+  <!-- Gazebo plugin for ROS -->
+  <gazebo reference="hokuyo_link">
+    <sensor type="ray" name="laser">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>true</visualize>
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>720</samples>
+            <resolution>1</resolution>
+            <min_angle>-3.14159265359</min_angle>
+            <max_angle>3.14159265359</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.05</min>
+          <max>30.0</max>
+          <resolution>0.01</resolution>
+        </range>
+      </ray>
+      <plugin name="hokuyo_node" filename="libgazebo_ros_laser.so">
+        <robotNamespace></robotNamespace>
+        <topicName>/rob_gazebo/laser/scan</topicName>
+        <frameName>hokuyo_link</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+</robot>
+
