@@ -1,4 +1,11 @@
 <launch>
+  <!-- Rviz related -->
+  <!--
+  <arg name="rviz" value="true"/>
+  <arg name="config" value="basic"/>
+  <arg name="rvizconfig" default="$(find neo_simulation)/config/mpo_700/rviz/$(arg config)_config.rviz"/>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true"/>
+  -->
   <!-- World related -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find rob_gazebo)/worlds/vfeld.world"/>
@@ -6,15 +13,24 @@
 
   <!-- Lidars -->
   <group ns="lidar_1">
-    <arg name="x_pos" default="0.0"/>
-    <arg name="y_pos" default="0.0"/>
+    <arg name="x_pos" default="3.0"/>
+    <arg name="y_pos" default="1.5"/>
     <arg name="z_pos" default="0.0"/>
     <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
 
-    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar"  args="-urdf -model hokuyo -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_1"  args="-urdf -model hokuyo -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
   </group>
 
+  <group ns="lidar_2">
+    <arg name="x_pos" default="6.0"/>
+    <arg name="y_pos" default="1.5"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_2"  args="-urdf -model hoku -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+  </group>
   <!-- Turtlebot -->
+  <!--
   <group ns="turtle_rob">
     <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
     <arg name="x_pos" default="2.0"/>
@@ -24,7 +40,7 @@
     <node pkg="gazebo_ros" type="spawn_model" name="spawn_turtle"  args="-urdf -model turtlebot3_$(arg model) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
     <node pkg="turtlebot3_teleop" type="turtlebot3_teleop_key" name="turtlebot3_teleop_keyboard"  output="screen">
     </node>
-  </group>
+  </group> -->
 
   <!-- Neobotix MPO_700 -->
   <group ns="neo_rob">
@@ -33,10 +49,16 @@
     <arg name="y_pos" default="1.5"/>
     <arg name="z_pos" default="0.0"/>
     <param name="robot_description" command="$(find xacro)/xacro $(find neo_simulation)/robots/$(arg model_neo)/$(arg model_neo).urdf.xacro" />
+    <include file="$(find neo_simulation)/config/controller/launch/controller_utils.launch"/>
+    <include file="$(find neo_simulation)/config/mpo_700/gmapping/mpo_700_gmapping.launch"/>
 
     <node pkg="gazebo_ros" type="spawn_model" name="spawn_neo"  args="-urdf -model neo_$(arg model_neo) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
-    <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_keyboard"  output="screen">
+    <node name="neo_state_pub" pkg="robot_state_publisher" type="robot_state_publisher">
+    <param name="publish_frequency" value="100.0"/>
     </node>
+    <rosparam file="$(find neo_simulation)/config/controller/mpo_700_wheel_controller.yaml" command="load"/>
+    <node name="wheel_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn mpo_700_caster_front_left_controller mpo_700_caster_front_right_controller mpo_700_caster_back_left_controller mpo_700_caster_back_right_controller mpo_700_wheel_front_left_controller mpo_700_wheel_front_right_controller mpo_700_wheel_back_left_controller mpo_700_wheel_back_right_controller" respawn="false" output="screen"/>
+    <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_keyboard"  output="screen"/>
   </group>
-
 </launch>
+
