@@ -34,6 +34,7 @@
   </link>
   <!-- Lidar itself -->
   <joint name="hokuyo_joint" type="fixed">
+    <!-- <axis xyz="0 1 0"/> -->
     <origin xyz="0 0 ${height + 0.05}" rpy="0 0 0"/>
     <parent link="link1"/>
     <child link="hokuyo_link"/>
