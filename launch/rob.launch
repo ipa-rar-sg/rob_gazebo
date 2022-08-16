@@ -1,46 +1,110 @@
 <launch>
   <!-- Rviz related -->
-  <!--
+  
   <arg name="rviz" value="true"/>
   <arg name="config" value="basic"/>
   <arg name="rvizconfig" default="$(find neo_simulation)/config/mpo_700/rviz/$(arg config)_config.rviz"/>
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true"/>
-  -->
+  
   <!-- World related -->
+
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find rob_gazebo)/worlds/vfeld.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="false"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
   </include>
 
   <!-- Lidars -->
-  <group ns="lidar_1">
+  <group ns="node_1">
     <arg name="x_pos" default="3.0"/>
     <arg name="y_pos" default="1.5"/>
     <arg name="z_pos" default="0.0"/>
     <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
 
-    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_1"  args="-urdf -model hokuyo -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_1"  args="-urdf -model node_1 -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
   </group>
 
-  <group ns="lidar_2">
+  <group ns="node_2">
     <arg name="x_pos" default="6.0"/>
     <arg name="y_pos" default="1.5"/>
     <arg name="z_pos" default="0.0"/>
     <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
 
-    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_2"  args="-urdf -model hoku -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_2"  args="-urdf -model node_2 -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
   </group>
-  <!-- Turtlebot -->
-  <!--
-  <group ns="turtle_rob">
-    <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
-    <arg name="x_pos" default="2.0"/>
-    <arg name="y_pos" default="1.0"/>
+
+  <group ns="node_3">
+    <arg name="x_pos" default="9.0"/>
+    <arg name="y_pos" default="1.5"/>
     <arg name="z_pos" default="0.0"/>
-    <param name="robot_description" command="$(find xacro)/xacro $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />
-    <node pkg="gazebo_ros" type="spawn_model" name="spawn_turtle"  args="-urdf -model turtlebot3_$(arg model) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
-    <node pkg="turtlebot3_teleop" type="turtlebot3_teleop_key" name="turtlebot3_teleop_keyboard"  output="screen">
-    </node>
-  </group> -->
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_3"  args="-urdf -model node_3 -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+  </group>
+
+  <group ns="node_4">
+    <arg name="x_pos" default="12.0"/>
+    <arg name="y_pos" default="1.5"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_4"  args="-urdf -model node_4 -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+  </group>
+  <group ns="node_5">
+    <arg name="x_pos" default="14.0"/>
+    <arg name="y_pos" default="1.5"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_5"  args="-urdf -model node_5 -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+  </group>
+
+  <group ns="node_6">
+    <arg name="x_pos" default="3.0"/>
+    <arg name="y_pos" default="8.5"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_6"  args="-urdf -model node_6 -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+  </group>
+
+  <group ns="node_7">
+    <arg name="x_pos" default="6.0"/>
+    <arg name="y_pos" default="8.5"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_7"  args="-urdf -model node_7 -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+  </group>
+
+  <group ns="node_8">
+    <arg name="x_pos" default="9.0"/>
+    <arg name="y_pos" default="8.5"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_8"  args="-urdf -model node_8 -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+  </group>
+  <group ns="node_9">
+    <arg name="x_pos" default="12.0"/>
+    <arg name="y_pos" default="8.5"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_9"  args="-urdf -model node_9 -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+  </group>
+
+  <group ns="node_10">
+    <arg name="x_pos" default="12.0"/>
+    <arg name="y_pos" default="4.5"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_10"  args="-urdf -model node_10 -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+  </group>
 
   <!-- Neobotix MPO_700 -->
   <group ns="neo_rob">
@@ -60,5 +124,28 @@
     <node name="wheel_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn mpo_700_caster_front_left_controller mpo_700_caster_front_right_controller mpo_700_caster_back_left_controller mpo_700_caster_back_right_controller mpo_700_wheel_front_left_controller mpo_700_wheel_front_right_controller mpo_700_wheel_back_left_controller mpo_700_wheel_back_right_controller" respawn="false" output="screen"/>
     <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_keyboard"  output="screen"/>
   </group>
+
+  <arg name="map_file" default="$(find heatmap_gen)/maps/vfeld1.yaml"/>
+    <arg name="debug" default="false" />
+    <arg name="gui" default="true" />
+    <arg name="pause" default="false" />
+
+    <arg name="x_pos" default="0.0"/>
+    <arg name="y_pos" default="0.0"/>
+    <arg name="z_pos" default="0.0"/>
+
+    <!-- Map server -->
+    <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+    
+    <node name="costmap_generator" pkg="heatmap_gen" type="costmap_generator" output="screen">
+      <rosparam file="$(find heatmap_gen)/config/costmap_params.yaml" command="load" ns="costmap/obstacles" />
+    </node>
+
+    <node name="heatmap_generator" pkg="heatmap_gen" type="heatmap_generator" output="screen">
+      <param name="aggregation_time" value="2" />
+    </node>
+
+    <node pkg="tf" type="static_transform_publisher" name="sensor_link_broadcaster" args="0 0 0 0 0 0 world map 100" />
+
 </launch>
 
