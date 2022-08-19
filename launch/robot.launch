@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <arg name="world_name_global" default="$(find rob_gazebo)/worlds/vfeld.world"/>
+  <arg name="teleop" default="true"/>
+
+  <!-- Gazebo simulation environment variables -->
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world_name_global)"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="headless" value="$(arg headless)"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include>
+
+  <!-- Main robot -->
+  <group ns="neo_rob">
+    <!-- Model and initial position -->
+    <arg name="model_neo" default="mpo_700"/>
+    <arg name="x_pos" default="2.0"/>
+    <arg name="y_pos" default="1.0"/>
+    <arg name="z_pos" default="0.0"/>
+    <!-- Robot description -->
+    <param name="robot_description" command="$(find xacro)/xacro '$(find neo_simulation)/robots/$(arg model_neo)/$(arg model_neo).urdf.xacro'"/>
+    <include file="$(find neo_simulation)/config/controller/launch/controller_utils.launch"/>
+
+    <node name="mpo_700_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model mpo_700 -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos)"/>
+
+    <!-- Robot State Publisher -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+    <param name="publish_frequency" value="100.0"/>
+    </node>
+
+    <!-- Wheel controller -->
+    <rosparam file="$(find neo_simulation)/config/controller/mpo_700_wheel_controller.yaml" command="load"/>
+    <node name="wheel_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn mpo_700_caster_front_left_controller mpo_700_caster_front_right_controller mpo_700_caster_back_left_controller mpo_700_caster_back_right_controller mpo_700_wheel_front_left_controller mpo_700_wheel_front_right_controller mpo_700_wheel_back_left_controller mpo_700_wheel_back_right_controller" respawn="false" output="screen"/>
+
+    <!-- Launch kinematics -->
+    <rosparam command="load" ns="kinematics_omnidrive" file="$(find neo_kinematics_omnidrive)/launch/test_setup.yaml"/>
+    <node pkg="neo_kinematics_omnidrive" type="neo_omnidrive_simulation_node" ns="kinematics_omnidrive" name="neo_omnidrive_simulation_node" respawn="false"/>
+    <!-- Teleop joystick keyboard keys -->
+    <group if="$(arg teleop)">
+      <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_keyboard" output="screen"/>
+    </group>
+
+  </group>
+
+  <!-- Lidars -->
+
+  <group ns="node_1">
+    <arg name="node_num" default="1"/>
+    <arg name="x_pos" default="8.0"/>
+    <arg name="y_pos" default="0.1"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_$(arg node_num)"  args="-urdf -model node_$(arg node_num) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description"/>
+  </group>
+  <group ns="node_2">
+    <arg name="node_num" default="2"/>
+    <arg name="x_pos" default="16.0"/>
+    <arg name="y_pos" default="0.1"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_$(arg node_num)"  args="-urdf -model node_$(arg node_num) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description"/>
+  </group>
+  <group ns="node_3">
+    <arg name="node_num" default="3"/>
+    <arg name="x_pos" default="28.2"/>
+    <arg name="y_pos" default="0.1"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_$(arg node_num)"  args="-urdf -model node_$(arg node_num) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description"/>
+  </group>
+  <group ns="node_4">
+    <arg name="node_num" default="4"/>
+    <arg name="x_pos" default="28.8"/>
+    <arg name="y_pos" default="-0.3"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_$(arg node_num)"  args="-urdf -model node_$(arg node_num) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description"/>
+  </group>
+  <group ns="node_5">
+    <arg name="node_num" default="5"/>
+    <arg name="x_pos" default="28.2"/>
+    <arg name="y_pos" default="4.0"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_$(arg node_num)"  args="-urdf -model node_$(arg node_num) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description"/>
+  </group>
+  <group ns="node_6">
+    <arg name="node_num" default="6"/>
+    <arg name="x_pos" default="28.2"/>
+    <arg name="y_pos" default="8.0"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_$(arg node_num)"  args="-urdf -model node_$(arg node_num) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description"/>
+  </group>
+  <group ns="node_7">
+    <arg name="node_num" default="7"/>
+    <arg name="x_pos" default="27.7"/>
+    <arg name="y_pos" default="10.15"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_$(arg node_num)"  args="-urdf -model node_$(arg node_num) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description"/>
+  </group>
+  <group ns="node_8">
+    <arg name="node_num" default="8"/>
+    <arg name="x_pos" default="16.0"/>
+    <arg name="y_pos" default="10.15"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_$(arg node_num)"  args="-urdf -model node_$(arg node_num) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description"/>
+  </group>
+  <group ns="node_9">
+    <arg name="node_num" default="9"/>
+    <arg name="x_pos" default="14.15"/>
+    <arg name="y_pos" default="5.5"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_$(arg node_num)"  args="-urdf -model node_$(arg node_num) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description"/>
+  </group>
+  <group ns="node_10">
+    <arg name="node_num" default="10"/>
+    <arg name="x_pos" default="8.0"/>
+    <arg name="y_pos" default="10.15"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="robot_description" command="$(find xacro)/xacro $(find rob_gazebo)/urdf/lidar.xacro" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_lidar_$(arg node_num)"  args="-urdf -model node_$(arg node_num) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description"/>
+  </group>
+
+</launch>

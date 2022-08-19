@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+  <!-- Gmapping -->
+  <node pkg="gmapping" name="slam_gmapping" type="slam_gmapping" output="screen">
+    <remap from="scan" to="/lidar_1/scan_filtered"/>
+    <rosparam file="$(find neo_simulation)/config/mpo_700/gmapping/gmapping_config.yaml" command="load" />
+  </node>
+
+  <!-- Move base -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+
+    <!-- Costmaps -->
+    <rosparam file="$(find neo_simulation)/config/mpo_700/move_base/costmaps/costmap_common.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find neo_simulation)/config/mpo_700/move_base/costmaps/costmap_common.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find neo_simulation)/config/mpo_700/move_base/costmaps/costmap_local.yaml" command="load" />
+    <rosparam file="$(find neo_simulation)/config/mpo_700/move_base/costmaps/costmap_global.yaml" command="load" />
+
+    <!-- Global Planner (NavFN) -->
+    <param name="base_global_planner" value="navfn/NavfnROS"/>
+    <rosparam file="$(find neo_simulation)/config/mpo_700/move_base/global_planner/NavFnROS/navfnros_planner.yaml" command="load" />
+
+    <!-- NeoLocalPlanner -->
+    <param name="base_local_planner" value="neo_local_planner/NeoLocalPlanner"/>
+    <rosparam file="$(find neo_simulation)/config/mpo_700/move_base/local_planner/neo_local_planner/neo_planner.yaml" command="load" />
+
+    <!-- Common -->
+    <rosparam file="$(find neo_simulation)/config/mpo_700/move_base/move_base/move_base.yaml" command="load" />
+
+  </node>
+
+</launch>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  
+  <!-- Global arguments -->
+  <arg name="rviz" default="true"/>
+  <arg name="robot_type" default="mpo_700"/>
+  <arg name="robot_world" default="vfeld.world"/>
+  <arg name="exploration" default="true"/>
+
+  <!-- Simulation -->
+  <include file="$(find rob_gazebo)/launch/robot.launch"/>
+
+  <!-- Exploration (SLAM - gmapping) -->
+  <group if="$(arg exploration)">
+    <include file="$(find rob_gazebo)/launch/rob_slam.launch"/>
+  </group>
+
+  <!-- Rviz -->
+  <group if="$(arg rviz)">
+    <include file="$(find rob_gazebo)/launch/rviz.launch"/>
+  </group>
+
+</launch>
