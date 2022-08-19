@@ -16,12 +16,9 @@
     sudo apt-get install ros-$ROS_DISTRO-navigation
     sudo apt-get install ros-$ROS_DISTRO-joy
     sudo apt-get install ros-$ROS_DISTRO-teleop-twist-keyboard
+    sudo apt install ros-$ROS_DISTRO-slam-gmapping
 ```
 - Source your catkin environment
-- For now, testing with Turtlebot3, export your env variable with the model:
-```bash
-    export TURTLEBOT3_MODEL=burger
-```
 - To see the world, just launch:
 ```bash
     roslaunch rob_gazebo rob.launch
@@ -30,20 +27,19 @@
 ```bash
     roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
 ```
-#### SLAM with Turtlebot3
-##### Requirements
-- Turtlebot3 and gmapping
-```bash
-    sudo apt install ros-noetic-turtlebot3 ros-noetic-slam-gmapping
-```
+#### Running Simulation
 ##### Running steps
-- Launch the slam module and then operate from the teleop terminal commands
+- Check the sim.launch file for the possible arguments, and modify them if required (or specify them at launch time)
+- Just launch sim.launch
 ```bash
-    roslaunch turtlebot3_slam turtlebot3_slam.launch slam_methods:=gmapping
+    roslaunch rob_gazebo sim.launch
 ```
-- To save the map:
+
+#### Running neo_simulation
+- Check the following [Neobotix - Starting with simulation](https://neobotix-docs.de/ros/ros1/simulation.html)
+- In the neo_simulation package, in the file simulation.launch, set the map for your desired map, and same for the launching arguments.
 ```bash
-    rosrun map_server map_saver -f "file_name_and_path_here"
+    roslaunch neo_simulation simulation.launch
 ```
 
 ### Useful important links
