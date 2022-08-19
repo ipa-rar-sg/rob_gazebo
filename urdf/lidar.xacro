@@ -80,8 +80,8 @@
         </range>
       </ray>
       <plugin name="hokuyo_node" filename="libgazebo_ros_laser.so">
-        <robotNamespace></robotNamespace>
-        <topicName>/rob_gazebo/laser/scan</topicName>
+        <!-- <robotNamespace></robotNamespace> -->
+        <!-- <topicName>/rob_gazebo/laser/scan</topicName> -->
         <frameName>hokuyo_link</frameName>
       </plugin>
     </sensor>

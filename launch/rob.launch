@@ -125,7 +125,7 @@
     <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_keyboard"  output="screen"/>
   </group>
 
-  <arg name="map_file" default="$(find heatmap_gen)/maps/vfeld1.yaml"/>
+  <arg name="map_file" default="$(find rob_gazebo)/maps/vfeldragesh.yaml"/>
     <arg name="debug" default="false" />
     <arg name="gui" default="true" />
     <arg name="pause" default="false" />
